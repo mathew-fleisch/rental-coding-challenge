@@ -2,6 +2,11 @@ h1 {
 	margin-bottom:0;
 }
 .notop { margin-top:0; margin-bottom:0; }
+#num_bedroom,#num_bathroom {
+    display: inline-block;
+    width: 50px;
+}
+.dropdown { display: inline-block; }
 #container { 
 	display: none; 
 

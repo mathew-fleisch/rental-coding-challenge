@@ -23,18 +23,47 @@
     <h4 class="notop"><a href="https://github.com/mathew-fleisch/rental-coding-challenge" target="_blank">Solution Source</a></h4>
 
     <hr />
-    
+
     <div id="predict-container" class="form-group">
         <h3>Rental Price Calculator</h3>
 
         <hr />
-
-        <label for="num_bedrooms">How many bedrooms?</label>
-        <input type="text" id="num_bedrooms" class="form-control" />
+        <div class="dropdown">
+            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Number of bedrooms <span class="caret"></span></button>
+            <ul class="dropdown-menu bedroom_dropdown">
+                <li><a href="javascript:;" class="bdrm_dropdown" id="bdrm_0">0</a></li>
+                <li><a href="javascript:;" class="bdrm_dropdown" id="bdrm_1">1</a></li>
+                <li><a href="javascript:;" class="bdrm_dropdown" id="bdrm_2">2</a></li>
+                <li><a href="javascript:;" class="bdrm_dropdown" id="bdrm_3">3</a></li>
+                <li><a href="javascript:;" class="bdrm_dropdown" id="bdrm_4">4</a></li>
+                <li><a href="javascript:;" class="bdrm_dropdown" id="bdrm_5">5</a></li>
+                <li><a href="javascript:;" class="bdrm_dropdown" id="bdrm_6">6</a></li>
+                <li><a href="javascript:;" class="bdrm_dropdown" id="bdrm_7">7</a></li>
+                <li><a href="javascript:;" class="bdrm_dropdown" id="bdrm_8">8</a></li>
+                <li><a href="javascript:;" class="bdrm_dropdown" id="bdrm_9">9</a></li>
+                <li><a href="javascript:;" class="bdrm_dropdown" id="bdrm_10">10</a></li>
+            </ul>
+        </div>
+        <input type="text" size="2" class="form-control" id="num_bedroom" readonly="readonly" />
         <hr />
 
-        <label for="num_bathrooms">How many bathrooms?</label>
-        <input type="text" id="num_bathrooms" class="form-control" />
+        <div class="dropdown">
+            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Number of bathrooms <span class="caret"></span></button>
+            <ul class="dropdown-menu bathroom_dropdown">
+                <li><a href="javascript:;" class="bathrm_dropdown" id="bathrm_0">0</a></li>
+                <li><a href="javascript:;" class="bathrm_dropdown" id="bathrm_1">1</a></li>
+                <li><a href="javascript:;" class="bathrm_dropdown" id="bathrm_2">2</a></li>
+                <li><a href="javascript:;" class="bathrm_dropdown" id="bathrm_3">3</a></li>
+                <li><a href="javascript:;" class="bathrm_dropdown" id="bathrm_4">4</a></li>
+                <li><a href="javascript:;" class="bathrm_dropdown" id="bathrm_5">5</a></li>
+                <li><a href="javascript:;" class="bathrm_dropdown" id="bathrm_6">6</a></li>
+                <li><a href="javascript:;" class="bathrm_dropdown" id="bathrm_7">7</a></li>
+                <li><a href="javascript:;" class="bathrm_dropdown" id="bathrm_8">8</a></li>
+                <li><a href="javascript:;" class="bathrm_dropdown" id="bathrm_9">9</a></li>
+                <li><a href="javascript:;" class="bathrm_dropdown" id="bathrm_10">10</a></li>
+            </ul>
+        </div>
+        <input type="text" size="2" class="form-control" id="num_bathroom" readonly="readonly" />
         <hr />
 
         <label for="square_footage">What is the square footage?</label>

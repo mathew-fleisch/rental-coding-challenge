@@ -80,6 +80,18 @@ jQuery(document).ready(function($) {
 				}
 			});
 
+			$('body').on('click', '.bdrm_dropdown', function() {
+				$('#num_bedroom').val($(this).attr('id').replace(/bdrm_/, ''));
+			});
+
+			$('body').on('click', '.bathrm_dropdown', function() {
+				$('#num_bathroom').val($(this).attr('id').replace(/bathrm_/, ''));
+			});
+
+			//Calculate button binding
+			$('body').on('click', '#calc-price', function() {
+				console.log("click");
+			});
 		} else { 
 			$('#predict-container,#container,#show-raw').hide();
 			alert("Could NOT load the raw data. Please make sure the json file is connected and reload.");
