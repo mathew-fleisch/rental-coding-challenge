@@ -17,8 +17,13 @@
   </head>
   <body>
     <h1>Rentals Recruitment Coding Challenge</h1>
-    <h3 class="notop">Mathew Fleisch: <a href="RentalsRecruitmentCodingChallenge.html" target="_blank">challenge doc</a> - <a href="https://github.com/mathew-fleisch/rental-coding-challenge" target="_blank">source</a> </h3>
+    <h3 class="notop">Mathew Fleisch - <a href="mailto:mathew.fleisch@gmail.com">mathew.fleisch@gmail.com</a></h3>
+    <h4 class="notop"><a href="RentalsRecruitmentCodingChallenge.html" target="_blank">Challenge Document</a></h4>
+    <h4 class="notop"><a href="challenge_data.csv" target="_blank">Initial CSV</a> - <a href="js/raw_data.php" target="_blank">Transformed to JSON</a></h4>
+    <h4 class="notop"><a href="https://github.com/mathew-fleisch/rental-coding-challenge" target="_blank">Solution Source</a></h4>
 
+    <hr />
+    
     <div id="predict-container" class="form-group">
         <h3>Rental Price Calculator</h3>
 
