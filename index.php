@@ -17,7 +17,7 @@
   </head>
   <body>
     <h1>Rentals Recruitment Coding Challenge</h1>
-    <h2>Mathew Fleisch</h2>
+    <h3 class="notop">Mathew Fleisch: <a href="RentalsRecruitmentCodingChallenge.html" target="_blank">challenge doc</a> - <a href="https://github.com/mathew-fleisch/rental-coding-challenge" target="_blank">source</a> </h3>
 
     <div id="predict-container" class="form-group">
         <h3>Rental Price Calculator</h3>
