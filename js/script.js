@@ -29,13 +29,16 @@ jQuery(document).ready(function($) {
 
 		console.log("Totals for Bedroom/Bathrooms: ",avg_byBedBath);
 		$("#container").append('<div class="avg_by_bedroom_bathroom">'
-				+'<table class="table table-hover table-striped">'
+				+'<table class="table table-hover table-striped table-bordered">'
 					+'<thead>'
-						+'<th>Number of Bedrooms / Bathrooms</th>'
+						+'<th>Number of Bedrooms</th>'
+						+'<th>Number of Bathrooms</th>'
+						+'<th>Low-End Price</th>'
 						+'<th>Average Price</th>'
-						+'<th>Price Range</th>'
-						+'<th>Square Footage Range</th>'
-						+'<th>Dataset size</th>'
+						+'<th>High-End Price</th>'
+						+'<th>Square Footage Range (low)</th>'
+						+'<th>Square Footage Range (high)</th>'
+						// +'<th>Dataset size</th>'
 					+'</thead>'
 					+'<tbody></tbody>'
 				+'</table></div><hr />');
@@ -45,11 +48,13 @@ jQuery(document).ready(function($) {
 					+avg_byBedBath[num_bed][num_bath].length+"]: "
 					+"$"+numberWithCommas(Math.round(avg_byBedBath[num_bed][num_bath].reduce(function(a,b) { return a+b; }, 0)/avg_byBedBath[num_bed][num_bath].length)));
 				$(".avg_by_bedroom_bathroom table tbody").append('<tr>'
-						+'<td>'+num_bed+' bedrooms and '+num_bath+' bathrooms</td>'
+						+'<td>'+num_bed+'</td><td>'+num_bath+'</td>'
+						+'<td>$'+numberWithCommas(Math.min(...avg_byBedBath[num_bed][num_bath]))+'</td>'
 						+'<td>$'+numberWithCommas(Math.round(avg_byBedBath[num_bed][num_bath].reduce(function(a,b) { return a+b; }, 0)/avg_byBedBath[num_bed][num_bath].length))+'</td>'
-						+'<td>$'+numberWithCommas(Math.min(...avg_byBedBath[num_bed][num_bath]))+' - $'+numberWithCommas(Math.max(...avg_byBedBath[num_bed][num_bath]))+'</td>'
-						+'<td>'+numberWithCommas(Math.min(...square_footage[num_bed][num_bath]))+'sqft - '+numberWithCommas(Math.max(...square_footage[num_bed][num_bath]))+'sqft</td>'
-						+'<td>'+avg_byBedBath[num_bed][num_bath].length+'</td>'
+						+'<td>$'+numberWithCommas(Math.max(...avg_byBedBath[num_bed][num_bath]))+'</td>'
+						+'<td>'+numberWithCommas(Math.min(...square_footage[num_bed][num_bath]))+'</td>'
+						+'<td>'+numberWithCommas(Math.max(...square_footage[num_bed][num_bath]))+'</td>'
+						// +'<td>'+avg_byBedBath[num_bed][num_bath].length+'</td>'
 					+'</tr>');
 			}
 		}
@@ -64,6 +69,15 @@ jQuery(document).ready(function($) {
 
 	$('body').on('click', '#reset-sort', function() {
 		raw_table.fnSortNeutral();
+	});
+	$('body').on('click', '#show-raw', function() {
+		if($('#container').is(":visible")) { 
+			$(this).html("Show Raw Data");
+			$('#container').slideUp();
+		} else { 
+			$(this).html("Hide Raw Data");
+			$("#container").slideDown();
+		}
 	});
 
 });

@@ -1,0 +1,24 @@
+#container { 
+	display: none; 
+
+	margin: 10px auto;
+	padding: 10px 20px;
+	border: 1px solid #444;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+}
+#predict-container {
+	width:400px;
+
+	margin: 10px auto;
+	padding: 10px 20px;
+	border: 1px solid #444;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+}
+#calc-price {
+	float:right;
+}
+.clear { clear:both; height:1px; }
