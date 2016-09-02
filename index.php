@@ -33,20 +33,20 @@
 
             <label for="num_bedrooms">How many bedrooms?</label>
             <input id="bedrooms" data-slider-id='bedrooms' type="text" data-slider-min="0" data-slider-max="10" data-slider-step="1" data-slider-value="0" />
-            <input type="text" id="num_bedrooms" class="form-control" value="0" readonly="readonly" />
+            <input type="text" id="num_bedrooms" class="form-control" value="1" readonly="readonly" />
 
             <br class="clear" />
 
             <hr />
             <label for="num_bathrooms">How many bathrooms?</label>
             <input id="bathrooms" data-slider-id='bathrooms' type="text" data-slider-min="0" data-slider-max="10" data-slider-step="1" data-slider-value="0" />
-            <input type="text" id="num_bathrooms" class="form-control" value="0" readonly="readonly" />
+            <input type="text" id="num_bathrooms" class="form-control" value="1" readonly="readonly" />
 
             <br class="clear" />
             <hr />
 
             <label for="square_footage">What is the square footage?</label>
-            <input id="squarefootage" data-slider-id='squarefootage' type="text" data-slider-min="0" data-slider-max="8000" data-slider-step="100" data-slider-value="0" />
+            <input id="squarefootage" data-slider-id='squarefootage-slider' type="text" data-slider-min="0" data-slider-max="10000" data-slider-step="1" data-slider-value="0" />
             <input type="text" id="square_footage" class="form-control" value="0" readonly="readonly" />
 
             <br class="clear" />
@@ -56,7 +56,8 @@
         </div>
 
         <div id="calculated-container">
-            <input id="calculator-slider" type="text" data-slider-min="-5" data-slider-max="20" data-slider-step="1" data-slider-value="-3" data-slider-orientation="vertical"/>
+            <h3>Suggested Price</h3>
+            <input id="calculator-slider" data-slider-id='calc-slider' type="text" data-slider-min="-5" data-slider-max="20" data-slider-step="1" data-slider-value="-3" data-slider-orientation="vertical"/>
         </div>
 
         <br class="clear" />    
@@ -64,12 +65,6 @@
     </div>
     
     <br class="clear" />   
-<!--     <input id="ex4" type="text" data-slider-min="-5" data-slider-max="20" data-slider-step="1" data-slider-value="-3" data-slider-orientation="vertical"/>
-    <br />
-    <br />
-    <br />
-    <br />
-    <button id="calc-price" class="btn btn-success">Calculate Price</button> -->
 
     <hr />
 

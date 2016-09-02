@@ -5,7 +5,7 @@ jQuery(document).ready(function($) {
 			var track           = 0;
 			var avg_byBedBath    = [];
 			var square_footage   = [];
-			var avg_bySquareFoot = [];
+			// var avg_bySquareFoot = [];
 			for(var rental in raw_data) { 
 				track++;
 				var crnt_price      = parseInt(raw_data[rental]['price']);
@@ -43,7 +43,7 @@ jQuery(document).ready(function($) {
 					+'</table></div><hr />');
 			for(var num_bed in avg_byBedBath) {
 				for(var num_bath in avg_byBedBath[num_bed]) { 
-					// console.log("   Average price for "+num_bed+" bedrooms and "+num_bath+" bathrooms [Number of this type: "
+					// console.log("---------------",avg_byBedBath,"   Average price for "+num_bed+" bedrooms and "+num_bath+" bathrooms [Number of this type: "
 					// 	+avg_byBedBath[num_bed][num_bath].length+"]: "
 					// 	+"$"+numberWithCommas(Math.round(avg_byBedBath[num_bed][num_bath].reduce(function(a,b) { return a+b; }, 0)/avg_byBedBath[num_bed][num_bath].length)));
 					$(".avg_by_bedroom_bathroom table tbody").append('<tr>'
@@ -110,24 +110,11 @@ jQuery(document).ready(function($) {
 				formatter: function(value) {
 					$('#square_footage').val(numberWithCommas(value));
 					calculate_price(avg_byBedBath, square_footage, $('#num_bedrooms').val(), $('#num_bathrooms').val(), $('#square_footage').val(), init);
-					return 'Square Footage: ' + value;
+					return 'Square Footage: ' + numberWithCommas(value);
 				}
 			});
 			init = false;
 
-
-
-			// $("#ex4").slider({
-			// 	reversed : true,
-			// 	ticks: [0, 100, 200, 300, 400],
-			// 	ticks_labels: ['$0', '$100', '$200', '$300', '$400'],
-			// 	ticks_snap_bounds: 30
-			// });
-
-			// $('body').on('click', '#calc-price', function() {
-			// 	$('#ex4').slider('setValue', 300);
-
-			// });
 
 		} else { 
 			$('#predict-container,#container,#show-raw').hide();
@@ -139,37 +126,70 @@ jQuery(document).ready(function($) {
 	}
 });
 function calculate_price(prices, square_footage, num_bedrooms, num_bathrooms, num_squarefootage, init) {
+	//Square footage percentage  = (sqft_low - value) / (sqft_high - sqft_low)
+	//Percentage mapped on price = ( (price_high - price low) * sqft_perc ) + price_low
 	if(!init){
 		//Display passed variables in console
-		console.log("-----------------");
-		console.log("calculate_price(prices, square_footage, num_bedrooms:"+num_bedrooms+", num_bathrooms:"+num_bathrooms+", num_squarefootage:"+num_squarefootage+", init:"+init+")");
-		console.log('prices:',prices, 'square_footage:',square_footage);
+		// console.log("-----------------");
+		// console.log("calculate_price(prices, square_footage, num_bedrooms:"+num_bedrooms+", num_bathrooms:"+num_bathrooms+", num_squarefootage:"+num_squarefootage+", init:"+init+")");
+		// console.log('prices:',prices, 'square_footage:',square_footage);
 
 		//Calculate min, max and average
-		var price_low  = Math.min(...prices[num_bedrooms][num_bathrooms]);
-		var price_high = Math.max(...prices[num_bedrooms][num_bathrooms]);
-		var price_avg  = Math.round(prices[num_bedrooms][num_bathrooms].reduce(function(a,b) { return a+b; }, 0)/prices[num_bedrooms][num_bathrooms].length);
+		var price_low  = (prices.hasOwnProperty(num_bedrooms) ? (prices[num_bedrooms].hasOwnProperty(num_bathrooms) ? Math.min(...prices[num_bedrooms][num_bathrooms]) : 1000) : 1000);
+		var price_high = (prices.hasOwnProperty(num_bedrooms) ? (prices[num_bedrooms].hasOwnProperty(num_bathrooms) ? Math.max(...prices[num_bedrooms][num_bathrooms]) : 6000) : 6000);
+		var price_avg  = (prices.hasOwnProperty(num_bedrooms) ? (prices[num_bedrooms].hasOwnProperty(num_bathrooms) ? Math.round(prices[num_bedrooms][num_bathrooms].reduce(function(a,b) { return a+b; }, 0)/prices[num_bedrooms][num_bathrooms].length) : 1000) : 1000);
+		var perc_sqft  = parseInt(num_squarefootage.replace(/,/g, ''))/100;
 
 		//Display calculated values in console
-		console.log('price_low: '+numberWithCommas(price_low),'price_high: '+numberWithCommas(price_high),'price_avg: '+numberWithCommas(price_avg));
+		// console.log('price_low: '+numberWithCommas(price_low));
+		// console.log('price_high: '+numberWithCommas(price_high));
+		// console.log('price_avg: '+numberWithCommas(price_avg));
+		// console.log('percentage:'+perc_sqft);
 
+		var sqft_low  = (square_footage.hasOwnProperty(num_bedrooms) ? (square_footage[num_bedrooms].hasOwnProperty(num_bathrooms) ? Math.min(...square_footage[num_bedrooms][num_bathrooms]) : 0) : 0);
+		var sqft_high = (square_footage.hasOwnProperty(num_bedrooms) ? (square_footage[num_bedrooms].hasOwnProperty(num_bathrooms) ? Math.max(...square_footage[num_bedrooms][num_bathrooms]) : 10000) : 10000);
+
+		// console.log('sqft_low:  '+numberWithCommas(sqft_low));
+		// console.log('sqft_high: '+numberWithCommas(sqft_high));
+		$('#squarefootage').slider('destroy');
+		$('#squarefootage').slider({
+			ticks: [0, sqft_low, sqft_high, (sqft_high+sqft_low)],
+			ticks_labels: [0+'ft&sup2;', 'Low<br />'+numberWithCommas(sqft_low)+'ft&sup2;', 'High<br />'+numberWithCommas(sqft_high)+'ft&sup2;', (sqft_high+sqft_low)+'ft&sup2;'],
+			ticks_snap_bounds: 10,
+			formatter: function(value) {
+				$('#square_footage').val(numberWithCommas(value));
+				perc_sqft  = (value >= sqft_low ? (value <= sqft_high ? parseInt( ( (sqft_low - value) / (sqft_high - sqft_low) ) * -100 ) : 100) : 0);
+				draw_price(price_low, price_high, price_avg, perc_sqft, sqft_low, sqft_high);
+				return numberWithCommas(value);
+			}
+		});
+		$('#squarefootage').slider('refresh');
+		draw_price(price_low, price_high, price_avg, perc_sqft, sqft_low, sqft_high);
+	}
+}
+
+function draw_price(price_low, price_high, price_avg, perc_sqft, sqft_low, sqft_high) { 
+		// console.log('draw_price(price_low: '+price_low+', price_high: '+price_high+', price_avg: '+price_avg+', perc_sqft: '+perc_sqft+', sqft_low: '+sqft_low+', sqft_high: '+sqft_high+')');
 		//Draw vertical slider
-		$("#calculator-slider").slider('destroy');
+		if($('#calc-slider').length) { $("#calculator-slider").slider('destroy'); }
 		$("#calculator-slider").slider({
 			reversed : true,
 			tooltip: 'always',
 			ticks: [price_low, price_high],
 			ticks_labels: ['Low: $'+numberWithCommas(price_low), 'High: $'+numberWithCommas(price_high)],
+			// ticks: [price_low, price_avg, price_high],
+			// ticks_labels: ['Low: $'+numberWithCommas(price_low), 'Avg: $'+price_avg, 'High: $'+numberWithCommas(price_high)],
+			// ticks: [0, price_low, price_high, (price_high+1000)],
+			// ticks_labels: ['$0', 'Low: $'+numberWithCommas(price_low), 'High: $'+numberWithCommas(price_high), '$'+numberWithCommas(price_high+1000)],
 			ticks_snap_bounds: 100,
 			formatter: function(value) {
-				return (value === price_avg ? 'Average Price: $'+numberWithCommas(value) : 'Suggested Price: '+numberWithCommas(value));
+				return (value === price_avg ? 'Average Price: $'+numberWithCommas(value) : 'Suggested Price: $'+numberWithCommas(value));
 			}
 		});
 		$('#calculator-slider').slider('refresh');
-		$('#calculator-slider').slider('setValue',price_avg);
+		$('#calculator-slider').slider('setValue',(perc_sqft > 0 ? ( ( (price_high - price_low) * (perc_sqft / 100) ) + price_low ) : price_avg));
 		$('#calculator-slider').slider('disable');
 
-	}
 }
 
 function numberWithCommas(x) { x = x.toString(); var pattern = /(-?\d+)(\d{3})/; while (pattern.test(x)) { x = x.replace(pattern, "$1,$2"); } return x; }
