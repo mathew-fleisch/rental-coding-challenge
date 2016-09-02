@@ -2,11 +2,20 @@ h1 {
 	margin-bottom:0;
 }
 .notop { margin-top:0; margin-bottom:0; }
-#num_bedroom,#num_bathroom {
+#num_bedrooms,#num_bathrooms,#square_footage {
     display: inline-block;
-    width: 50px;
+    width: 70px;
+    text-align: center;
+    float:right;
 }
+#bedrooms,#bathrooms,#squarefootage { margin-top:6px; }
 .dropdown { display: inline-block; }
+#reset-sort { display: inline-block; }
+.caret-reversed{
+  -ms-transform: rotate(180deg);
+  -webkit-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
 #container { 
 	display: none; 
 
@@ -18,16 +27,26 @@ h1 {
 	border-radius: 10px;
 }
 #predict-container {
-	width:400px;
-
-	margin: 10px auto;
+	width:330px;
+	float:left;
+	margin: 10px;
 	padding: 10px 20px;
 	border: 1px solid #444;
 	-webkit-border-radius: 10px;
 	-moz-border-radius: 10px;
 	border-radius: 10px;
 }
-#calc-price {
-	float:right;
+#calculated-container {
+	float:left;
+	margin: 10px;
+	padding: 30px 160px 30px 20px;
+	border: 1px solid #444;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
 }
+.slider.slider-vertical { height: 344px; }
+/*#calc-price {
+	float:right;
+}*/
 .clear { clear:both; height:1px; }

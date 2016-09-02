@@ -47,7 +47,8 @@ jQuery(document).ready(function($) {
 					// 	+avg_byBedBath[num_bed][num_bath].length+"]: "
 					// 	+"$"+numberWithCommas(Math.round(avg_byBedBath[num_bed][num_bath].reduce(function(a,b) { return a+b; }, 0)/avg_byBedBath[num_bed][num_bath].length)));
 					$(".avg_by_bedroom_bathroom table tbody").append('<tr>'
-							+'<td>'+num_bed+'</td><td>'+num_bath+'</td>'
+							+'<td>'+num_bed+'</td>'
+							+'<td>'+num_bath+'</td>'
 							+'<td>$'+numberWithCommas(Math.min(...avg_byBedBath[num_bed][num_bath]))+'</td>'
 							+'<td>$'+numberWithCommas(Math.round(avg_byBedBath[num_bed][num_bath].reduce(function(a,b) { return a+b; }, 0)/avg_byBedBath[num_bed][num_bath].length))+'</td>'
 							+'<td>$'+numberWithCommas(Math.max(...avg_byBedBath[num_bed][num_bath]))+'</td>'
@@ -72,26 +73,62 @@ jQuery(document).ready(function($) {
 			//Show/Hide raw data button binding
 			$('body').on('click', '#show-raw', function() {
 				if($('#container').is(":visible")) { 
-					$(this).html("Show Raw Data");
+					$(this).html('Show Raw Data <span class="caret"></span>');
 					$('#container').slideUp();
 				} else { 
-					$(this).html("Hide Raw Data");
+					$(this).html('Hide Raw Data <span class="caret caret-reversed"></span>');
 					$("#container").slideDown();
 				}
 			});
 
 			$('body').on('click', '.bdrm_dropdown', function() {
-				$('#num_bedroom').val($(this).attr('id').replace(/bdrm_/, ''));
+				$('#bedroom_trig').html('Number of Bedrooms: '+$(this).attr('id').replace(/bdrm_/, '')+' <span class="caret"></span>');
 			});
 
 			$('body').on('click', '.bathrm_dropdown', function() {
-				$('#num_bathroom').val($(this).attr('id').replace(/bathrm_/, ''));
+				$('#bathroom_trig').html('Number of Bathrooms: '+$(this).attr('id').replace(/bathrm_/, '')+' <span class="caret"></span>');
 			});
 
-			//Calculate button binding
-			$('body').on('click', '#calc-price', function() {
-				console.log("click");
+			var init = true;
+			$('#bedrooms').slider({
+				formatter: function(value) {
+					$('#num_bedrooms').val(value);
+					calculate_price(avg_byBedBath, square_footage, $('#num_bedrooms').val(), $('#num_bathrooms').val(), $('#square_footage').val(), init);
+					return (value > 0 ? (value > 1 ? value + ' Bedrooms' : value + ' Bedroom') : 'Studio');
+				}
 			});
+
+			$('#bathrooms').slider({
+				formatter: function(value) {
+					$('#num_bathrooms').val(value);
+					calculate_price(avg_byBedBath, square_footage, $('#num_bedrooms').val(), $('#num_bathrooms').val(), $('#square_footage').val(), init);
+					return (value > 0 ? (value > 1 ? value + ' Bathrooms' : value + ' Bathroom') : 'No Bathroom');
+				}
+			});
+
+			$('#squarefootage').slider({
+				formatter: function(value) {
+					$('#square_footage').val(numberWithCommas(value));
+					calculate_price(avg_byBedBath, square_footage, $('#num_bedrooms').val(), $('#num_bathrooms').val(), $('#square_footage').val(), init);
+					return 'Square Footage: ' + value;
+				}
+			});
+			init = false;
+
+
+
+			// $("#ex4").slider({
+			// 	reversed : true,
+			// 	ticks: [0, 100, 200, 300, 400],
+			// 	ticks_labels: ['$0', '$100', '$200', '$300', '$400'],
+			// 	ticks_snap_bounds: 30
+			// });
+
+			// $('body').on('click', '#calc-price', function() {
+			// 	$('#ex4').slider('setValue', 300);
+
+			// });
+
 		} else { 
 			$('#predict-container,#container,#show-raw').hide();
 			alert("Could NOT load the raw data. Please make sure the json file is connected and reload.");
@@ -101,5 +138,38 @@ jQuery(document).ready(function($) {
 		alert("Could NOT load the raw data. Please make sure the json file is connected and reload.");
 	}
 });
+function calculate_price(prices, square_footage, num_bedrooms, num_bathrooms, num_squarefootage, init) {
+	if(!init){
+		//Display passed variables in console
+		console.log("-----------------");
+		console.log("calculate_price(prices, square_footage, num_bedrooms:"+num_bedrooms+", num_bathrooms:"+num_bathrooms+", num_squarefootage:"+num_squarefootage+", init:"+init+")");
+		console.log('prices:',prices, 'square_footage:',square_footage);
+
+		//Calculate min, max and average
+		var price_low  = Math.min(...prices[num_bedrooms][num_bathrooms]);
+		var price_high = Math.max(...prices[num_bedrooms][num_bathrooms]);
+		var price_avg  = Math.round(prices[num_bedrooms][num_bathrooms].reduce(function(a,b) { return a+b; }, 0)/prices[num_bedrooms][num_bathrooms].length);
+
+		//Display calculated values in console
+		console.log('price_low: '+numberWithCommas(price_low),'price_high: '+numberWithCommas(price_high),'price_avg: '+numberWithCommas(price_avg));
+
+		//Draw vertical slider
+		$("#calculator-slider").slider('destroy');
+		$("#calculator-slider").slider({
+			reversed : true,
+			tooltip: 'always',
+			ticks: [price_low, price_high],
+			ticks_labels: ['Low: $'+numberWithCommas(price_low), 'High: $'+numberWithCommas(price_high)],
+			ticks_snap_bounds: 100,
+			formatter: function(value) {
+				return (value === price_avg ? 'Average Price: $'+numberWithCommas(value) : 'Suggested Price: '+numberWithCommas(value));
+			}
+		});
+		$('#calculator-slider').slider('refresh');
+		$('#calculator-slider').slider('setValue',price_avg);
+		$('#calculator-slider').slider('disable');
+
+	}
+}
 
 function numberWithCommas(x) { x = x.toString(); var pattern = /(-?\d+)(\d{3})/; while (pattern.test(x)) { x = x.replace(pattern, "$1,$2"); } return x; }
