@@ -58,16 +58,16 @@ function calculate_price(prices, square_footage, num_bedrooms, num_bathrooms, nu
 			formatter: function(value) {
 				$('#square_footage').val(numberWithCommas(value)+'ft²');
 				perc_sqft  = (value >= sqft_low ? (value <= sqft_high ? parseInt( ( (sqft_low - value) / (sqft_high - sqft_low) ) * -100 ) : 100) : 0);
-				draw_vertical_slider(price_low, price_med, price_high, price_avg, perc_sqft, sqft_low, sqft_high);
+				draw_vertical_and_horizontal_slider(price_low, price_med, price_high, price_avg, perc_sqft, sqft_low, sqft_high);
 				return numberWithCommas(value)+'ft²';
 			}
 		});
 		$('#squarefootage').slider('refresh');
-		draw_vertical_slider(price_low, price_med, price_high, price_avg, perc_sqft, sqft_low, sqft_high);
+		draw_vertical_and_horizontal_slider(price_low, price_med, price_high, price_avg, perc_sqft, sqft_low, sqft_high);
 	}
 }
 
-function draw_vertical_slider(price_low, price_med, price_high, price_avg, perc_sqft, sqft_low, sqft_high) { 
+function draw_vertical_and_horizontal_slider(price_low, price_med, price_high, price_avg, perc_sqft, sqft_low, sqft_high) { 
 	if($('#calc-slider').length) { $("#calculator-slider").slider('destroy'); }
 	$("#calculator-slider").slider({
 		reversed : true,
@@ -86,14 +86,32 @@ function draw_vertical_slider(price_low, price_med, price_high, price_avg, perc_
 	});
 	$('#calculator-slider').slider('setValue',(perc_sqft > 0 ? ( ( (price_high - price_low) * (perc_sqft / 100) ) + price_low ) : price_avg));
 	$('#calculator-slider').slider('disable');
+
+	if($('#calc-slider-hor').length) { $("#calculator-slider-hor").slider('destroy'); }
+	$("#calculator-slider-hor").slider({
+		tooltip: 'always',
+		ticks: [price_low, price_high],
+		ticks_labels: ['Low: $'+numberWithCommas(price_low), 'High: $'+numberWithCommas(price_high)],
+		/*
+		//With median price
+		ticks: [price_low, price_med, price_high],
+		ticks_labels: ['Low: $'+numberWithCommas(price_low), 'Median: $'+numberWithCommas(price_med), 'High: $'+numberWithCommas(price_high)],
+		*/
+		ticks_snap_bounds: 100,
+		formatter: function(value) {
+			return (value === price_avg ? (price_avg === 1000 && price_low === 1000 ? 'Insufficent data...' : 'Average Price: $'+numberWithCommas(value) ) : 'Suggested Price: $'+numberWithCommas(value));
+		}
+	});
+	$('#calculator-slider-hor').slider('setValue',(perc_sqft > 0 ? ( ( (price_high - price_low) * (perc_sqft / 100) ) + price_low ) : price_avg));
+	$('#calculator-slider-hor').slider('disable');
 }
 
 function initialize_raw_data_table(price_byBedBath, square_footage) { 
 	$("#container").append('<div class="avg_by_bedroom_bathroom">'
 			+'<table class="table table-hover table-striped table-bordered">'
 				+'<thead>'
-					+'<th>Number of Bedrooms</th>'
-					+'<th>Number of Bathrooms</th>'
+					+'<th>Beds</th>'
+					+'<th>Baths</th>'
 					+'<th>Low-End Price</th>'
 					+'<th>Average Price</th>'
 					+'<th>High-End Price</th>'

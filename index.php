@@ -3,7 +3,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
+
     <title>Rentals Recruitment Coding Challenge - Mathew Fleisch</title>
     <link href="css/bootstrap.css" rel="stylesheet">
     <link href="css/bootstrap-slider.css" rel="stylesheet">
@@ -38,24 +40,21 @@
             
             <hr />
 
-            <label for="num_bedrooms">How many bedrooms?</label>
+            <label for="num_bedrooms">How many bedrooms?</label><br />
             <input id="bed_rooms" data-slider-id='bedrooms' type="text" data-slider-min="0" data-slider-max="11" data-slider-step="1" data-slider-value="0" />
-            <input type="text" id="num_bedrooms" class="form-control" value="1" tabindex="1"  />
+            <input type="tel" id="num_bedrooms" class="form-control" value="1" tabindex="1"  />
 
             <br class="clear" />
 
-            <label for="num_bathrooms">How many bathrooms?</label>
+            <label for="num_bathrooms">How many bathrooms?</label><br />
             <input id="bath_rooms" data-slider-id='bathrooms' type="text" data-slider-min="0" data-slider-max="11" data-slider-step="1" data-slider-value="0" />
-            <input type="text" id="num_bathrooms" class="form-control" value="1" tabindex="2"  />
+            <input type="tel" id="num_bathrooms" class="form-control" value="1" tabindex="2"  />
 
             <br class="clear" />
 
-            <label for="square_footage">What is the square footage?</label>
+            <label for="square_footage">What is the square footage?</label><br />
             <input id="squarefootage" data-slider-id='squarefootage-slider' type="text" data-slider-min="0" data-slider-max="10000" data-slider-step="10" data-slider-value="0" />
-            <input type="text" id="square_footage" class="form-control" value="0" tabindex="3"  />
-
-            <br class="clear" />
-            <br />
+            <input type="tel" id="square_footage" class="form-control" value="0" tabindex="3"  />
 
             <br class="clear" />
         </div>
@@ -63,6 +62,7 @@
         <div id="calculated-container">
             <h3>Suggested Price</h3>
             <input id="calculator-slider" data-slider-id='calc-slider' type="text" data-slider-min="-5" data-slider-max="20" data-slider-step="1" data-slider-value="-3" data-slider-orientation="vertical"/>
+            <input id="calculator-slider-hor" data-slider-id='calc-slider-hor' type="text" data-slider-min="-5" data-slider-max="20" data-slider-step="1" data-slider-value="-3" />
         </div>
 
         <br class="clear" />    

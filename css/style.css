@@ -1,5 +1,5 @@
 body {
-	padding: 0 20px;
+	padding: 0 10px;
 }
 	h1 { 
 	margin-bottom:0;
@@ -12,7 +12,6 @@ body {
     float:right;
 }
 #bedrooms,#bathrooms,#squarefootage { margin-top:6px; }
-.dropdown { display: inline-block; }
 #reset-sort { display: inline-block; }
 .caret-reversed{
   -ms-transform: rotate(180deg);
@@ -21,7 +20,7 @@ body {
 }
 #container { 
 	display: none; 
-
+	overflow: scroll;
 	margin: 10px;
 	padding: 10px 20px;
 	border: 1px solid #444;
@@ -45,9 +44,28 @@ body {
 	display: none;
 	width:auto;
 	padding: 10px 20px 30px 20px;
+	margin-right:0;
 }
+
+
+
 #squarefootage-slider { margin-top:7px; margin-right: 20px; }
-#bedrooms,#bathrooms,#squarefootage-slider { cursor: pointer; }
-#calc-slider { height: 245px; margin-top:20px; }
-.quick_button { min-width: 310px; margin-bottom: 5px; }
+#bedrooms,#bathrooms,#squarefootage-slider { cursor: pointer; width: 60%; }
+#calc-slider { height: 205px; margin-top:20px; }
+#calc-slider-hor { width: 80%; margin-left: 20px; margin-top:30px; display:none; }
+.quick_button { min-width: 300px; margin:0 0 10px 10px; }
+
+
+@media screen and (max-width: 650px) {
+	.quick_button { width: 100%; margin: 0 0 10px 0; }
+	#predict-container, #calculated-container { width:100%; margin: 10px 0; } 
+	#calculated-container { padding-bottom: 0; }
+	#calc-slider { display:none; }
+	#calc-slider-hor { display:block; }
+	#calc-slider-hor .slider-tick-label { padding-top: 25px; }
+}
+@media screen and (-webkit-min-device-pixel-ratio:0) { 
+	select:focus, textarea:focus, input:focus { font-size: 16px; background: #eee; }
+	select,	textarea, input { font-size: 16px; }
+}
 .clear { clear:both; height:1px; }
