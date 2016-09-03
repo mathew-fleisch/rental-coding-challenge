@@ -3,8 +3,8 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/> -->
 
     <title>Rentals Recruitment Coding Challenge - Mathew Fleisch</title>
     <link href="css/bootstrap.css" rel="stylesheet">
@@ -33,6 +33,7 @@
     <button id="quick2" class="quick_button btn btn-primary">Westwood Towers - Studio, 1ba, 750 ft&sup2;</button><br />
     <button id="quick3" class="quick_button btn btn-primary">Bella Fortuna - 3bd, 1ba, 1500 ft&sup2;</button>
     <button id="quick4" class="quick_button btn btn-primary">Palace Apartments - 4bd, 2ba, 2250 ft&sup2;</button><br />
+    <button id="quick5" class="quick_button btn btn-primary">Default - 0bd, 0ba, 0 ft&sup2;</button>
     
     <div id="calculator">
         <div id="predict-container" class="form-group">
@@ -60,7 +61,7 @@
         </div>
 
         <div id="calculated-container">
-            <h3>Suggested Price</h3>
+            <h3 id="suggested-price-title">Suggested Price</h3>
             <input id="calculator-slider" data-slider-id='calc-slider' type="text" data-slider-min="-5" data-slider-max="20" data-slider-step="1" data-slider-value="-3" data-slider-orientation="vertical"/>
             <input id="calculator-slider-hor" data-slider-id='calc-slider-hor' type="text" data-slider-min="-5" data-slider-max="20" data-slider-step="1" data-slider-value="-3" />
         </div>
@@ -68,14 +69,9 @@
         <br class="clear" />    
 
     </div>
-    
-    <br class="clear" />   
 
-    <hr />
-
-    <button type="button" id="show-raw" class="btn btn-primary">Show Raw Data <span class="caret"></span></button>
     <div id="container">
-        <h3>Raw Rental Data - <button type="button" id="reset-sort" class="btn btn-primary">Reset Sorting</button></h3>
+        <h3 id="rental-data-title">Rental Data <button type="button" id="reset-sort" class="btn btn-link">Reset Sorting</button> <button type="button" id="show-all" class="btn btn-link">Show All</button></h3>
     </div>
     
   </body>
