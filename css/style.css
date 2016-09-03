@@ -7,7 +7,7 @@ body {
 .notop { margin-top:0; margin-bottom:0; }
 #num_bedrooms,#num_bathrooms,#square_footage {
     display: inline-block;
-    width: 70px;
+    width: 90px;
     text-align: center;
     float:right;
 }
@@ -29,26 +29,25 @@ body {
 	-moz-border-radius: 10px;
 	border-radius: 10px;
 }
-#predict-container {
-	width:350px;
+#predict-container, #calculated-container {
+	width:370px;
 	float:left;
 	margin: 10px;
-	padding: 10px 20px;
 	border: 1px solid #444;
 	-webkit-border-radius: 10px;
 	-moz-border-radius: 10px;
 	border-radius: 10px;
 }
+#predict-container {
+	padding: 10px 20px;
+}
 #calculated-container {
-	float:left;
-	margin: 10px;
+	display: none;
+	width:auto;
 	padding: 10px 20px 30px 20px;
-	border: 1px solid #444;
-	-webkit-border-radius: 10px;
-	-moz-border-radius: 10px;
-	border-radius: 10px;
 }
 #squarefootage-slider { margin-top:7px; margin-right: 20px; }
 #bedrooms,#bathrooms,#squarefootage-slider { cursor: pointer; }
-#calc-slider { height: 290px; margin-top:20px; }
+#calc-slider { height: 245px; margin-top:20px; }
+.quick_button { min-width: 310px; margin-bottom: 5px; }
 .clear { clear:both; height:1px; }

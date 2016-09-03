@@ -15276,3 +15276,9 @@
 
 	return $.fn.dataTable;
 }));
+jQuery.fn.dataTableExt.oApi.fnSortNeutral = function ( oSettings ) {
+    oSettings.aaSorting = [];
+    oSettings.aiDisplay.sort( function (x,y) { return x-y; });
+    oSettings.aiDisplayMaster.sort( function (x,y) { return x-y; });
+    oSettings.oApi._fnReDraw( oSettings );
+};
