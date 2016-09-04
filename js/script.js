@@ -1,3 +1,7 @@
+var init = true;
+var active_bedrooms      = -1;
+var active_bathrooms     = -1;
+var active_squarefootage = -1;
 jQuery(document).ready(function($) {
     if(typeof raw_data != 'undefined') {
         if(raw_data) {
@@ -11,7 +15,6 @@ jQuery(document).ready(function($) {
                 var crnt_bathrooms  = parseInt(raw_data[rental]['bathrooms']);
                 var crnt_sqfootage  = parseInt(raw_data[rental]['square-foot']);
 
-
                 //Aggregate prices based on the number of bedrooms and bathrooms
                 if(!price_byBedBath[crnt_bedrooms]) { price_byBedBath[crnt_bedrooms] = []; }
                 if(!price_byBedBath[crnt_bedrooms][crnt_bathrooms]) { price_byBedBath[crnt_bedrooms][crnt_bathrooms] = []; }
@@ -24,8 +27,12 @@ jQuery(document).ready(function($) {
             }
 
             initialize_raw_data_table(price_byBedBath, square_footage);
+            initialize_buttons();
 
-            initialize_sliders(price_byBedBath, square_footage);
+            initialize_slider(price_byBedBath, square_footage, "#bed_rooms", "#num_bedrooms", "input", -1, 11);
+            initialize_slider(price_byBedBath, square_footage, "#bath_rooms", "#num_bathrooms", "input", -1, 11);
+            initialize_slider(price_byBedBath, square_footage, "#squarefootage", "#square_footage", "input focus", -1, 10000);
+            init = false;
 
             //Initialize default view (onload)
             $('#quick5').click();
@@ -39,45 +46,50 @@ jQuery(document).ready(function($) {
         alert("Could NOT load the raw data. Please make sure the json file is connected and reload.");
     }
 });
+
 function calculate_price(prices, square_footage, num_bedrooms, num_bathrooms, num_squarefootage, init) {
     if(!init){
-        if(!$('#calculated-container').is(":visible")) { $('#calculated-container').show(); }
+        if(parseInt(active_bedrooms) !== parseInt(num_bedrooms) || parseInt(active_bathrooms) !== parseInt(num_bathrooms) || parseInt(active_squarefootage) !== parseInt(num_squarefootage)) {
 
-        //Calculate min, med, max and average
-        var price_low  = (prices.hasOwnProperty(num_bedrooms) ? (prices[num_bedrooms].hasOwnProperty(num_bathrooms) ? Math.min(...prices[num_bedrooms][num_bathrooms]) : 1000) : 1000);
-        var price_high = (prices.hasOwnProperty(num_bedrooms) ? (prices[num_bedrooms].hasOwnProperty(num_bathrooms) ? Math.max(...prices[num_bedrooms][num_bathrooms]) : 6000) : 6000);
-        var price_med  = parseInt((price_high - price_low)/2);
-        var price_avg  = (prices.hasOwnProperty(num_bedrooms) ? (prices[num_bedrooms].hasOwnProperty(num_bathrooms) ? Math.round(prices[num_bedrooms][num_bathrooms].reduce(function(a,b) { return a+b; }, 0)/prices[num_bedrooms][num_bathrooms].length) : 1000) : 1000);
+            if(!$('#calculated-container').is(":visible")) { $('#calculated-container').show(); }
 
-        var sqft_perc  = parseInt(num_squarefootage.replace(/,/g, '').replace(/\s*ft.*$/g, ''))/100;
-        var sqft_low   = (square_footage.hasOwnProperty(num_bedrooms) ? (square_footage[num_bedrooms].hasOwnProperty(num_bathrooms) ? Math.min(...square_footage[num_bedrooms][num_bathrooms]) : 0) : 0);
-        var sqft_high  = (square_footage.hasOwnProperty(num_bedrooms) ? (square_footage[num_bedrooms].hasOwnProperty(num_bathrooms) ? Math.max(...square_footage[num_bedrooms][num_bathrooms]) : 10000) : 10000);
+            //Calculate min, med, max and average
+            var price_low  = (prices.hasOwnProperty(num_bedrooms) ? (prices[num_bedrooms].hasOwnProperty(num_bathrooms) ? Math.min(...prices[num_bedrooms][num_bathrooms]) : 1000) : 1000);
+            var price_high = (prices.hasOwnProperty(num_bedrooms) ? (prices[num_bedrooms].hasOwnProperty(num_bathrooms) ? Math.max(...prices[num_bedrooms][num_bathrooms]) : 6000) : 6000);
+            var price_med  = parseInt((price_high - price_low)/2);
+            var price_avg  = (prices.hasOwnProperty(num_bedrooms) ? (prices[num_bedrooms].hasOwnProperty(num_bathrooms) ? Math.round(prices[num_bedrooms][num_bathrooms].reduce(function(a,b) { return a+b; }, 0)/prices[num_bedrooms][num_bathrooms].length) : 1000) : 1000);
 
-        if($('#squarefootage-slider').length) { $('#squarefootage').slider('destroy'); }
-        $('#squarefootage').slider({
-            ticks: [0, sqft_low, sqft_high, (sqft_high+sqft_low)],
-            ticks_labels: [0+'ft&sup2;', 'Low<br />'+numberWithCommas(sqft_low)+'ft&sup2;', 'High<br />'+numberWithCommas(sqft_high)+'ft&sup2;', (sqft_high+sqft_low)+'ft&sup2;'],
-            ticks_snap_bounds: 10,
-            formatter: function(value) {
-                $('#square_footage').val(numberWithCommas(value)+'ft²');
-                sqft_perc  = (value >= sqft_low ? (value <= sqft_high ? parseInt( ( (sqft_low - value) / (sqft_high - sqft_low) ) * -100 ) : 100) : 0);
-                draw_slider('#calc-slider', '#calculator-slider', price_low, price_med, price_high, price_avg, sqft_perc, sqft_low, sqft_high);
-                draw_slider('#calc-slider-hor', '#calculator-slider-hor', price_low, price_med, price_high, price_avg, sqft_perc, sqft_low, sqft_high);
-                return numberWithCommas(value)+'ft²';
-            }
-        });
-        $('#squarefootage').slider('refresh');
-        draw_slider('#calc-slider', '#calculator-slider', price_low, price_med, price_high, price_avg, sqft_perc, sqft_low, sqft_high);
-        draw_slider('#calc-slider-hor', '#calculator-slider-hor', price_low, price_med, price_high, price_avg, sqft_perc, sqft_low, sqft_high);
+            var sqft_perc  = parseInt(num_squarefootage.replace(/,/g, '').replace(/\s*ft.*$/g, ''))/100;
+            var sqft_low   = (square_footage.hasOwnProperty(num_bedrooms) ? (square_footage[num_bedrooms].hasOwnProperty(num_bathrooms) ? Math.min(...square_footage[num_bedrooms][num_bathrooms]) : 0) : 0);
+            var sqft_high  = (square_footage.hasOwnProperty(num_bedrooms) ? (square_footage[num_bedrooms].hasOwnProperty(num_bathrooms) ? Math.max(...square_footage[num_bedrooms][num_bathrooms]) : 10000) : 10000);
+            
+            if($('#squarefootage-slider').length) { $('#squarefootage').slider('destroy'); }
+            $('#squarefootage').slider({
+                ticks: [0, sqft_low, sqft_high, (sqft_high+sqft_low)],
+                ticks_labels: [0+'ft&sup2;', 'Low<br />'+numberWithCommas(sqft_low)+'ft&sup2;', 'High<br />'+numberWithCommas(sqft_high)+'ft&sup2;', numberWithCommas(sqft_high+sqft_low)+'ft&sup2;'],
+                ticks_snap_bounds: 10,
+                formatter: function(value) {
+                    $('#square_footage').val(numberWithCommas(value)+'ft²');
+                    sqft_perc  = (value >= sqft_low ? (value <= sqft_high ? parseInt( ( (sqft_low - value) / (sqft_high - sqft_low) ) * -100 ) : 100) : 0);
+                    draw_price_slider('#calc-slider', '#calculator-slider', price_low, price_med, price_high, price_avg, sqft_perc, sqft_low, sqft_high);
+                    draw_price_slider('#calc-slider-hor', '#calculator-slider-hor', price_low, price_med, price_high, price_avg, sqft_perc, sqft_low, sqft_high);
+                    return numberWithCommas(value)+'ft²';
+                }
+            });
+            $('#squarefootage').slider('refresh');
 
-        $("#reset-sort").hide();
-        $("#show-all").show();
-        $(".avg_by_bedroom_bathroom table tbody tr").hide();
-        $(".avg_by_bedroom_bathroom table tbody tr#row_"+num_bedrooms+"_"+num_bathrooms).show();
+            $("#reset-sort").hide();
+            $("#show-all").show();
+            $(".avg_by_bedroom_bathroom table tbody tr").hide();
+            $(".avg_by_bedroom_bathroom table tbody tr#row_"+num_bedrooms+"_"+num_bathrooms).show();
+
+            active_bedrooms      = num_bedrooms;
+            active_bathrooms     = num_bathrooms;
+            active_squarefootage = num_squarefootage;
+        }
     }
 }
-
-function draw_slider(target_id, target_slider, price_low, price_med, price_high, price_avg, sqft_perc, sqft_low, sqft_high) {
+function draw_price_slider(target_id, target_slider, price_low, price_med, price_high, price_avg, sqft_perc, sqft_low, sqft_high) {
     if($(target_id).length) { $(target_slider).slider('destroy'); }
     $(target_slider).slider({
         reversed : (target_slider.match(/hor/) ? false : true),
@@ -92,7 +104,36 @@ function draw_slider(target_id, target_slider, price_low, price_med, price_high,
     $(target_slider).slider('setValue',(sqft_perc > 0 ? ( ( (price_high - price_low) * (sqft_perc / 100) ) + price_low ) : price_avg));
     $(target_slider).slider('disable');
 }
+function initialize_buttons() { 
+    //Reset button binding
+    $('body').on('click', '#reset-sort', function() { $("#reset-sort").hide(); raw_table.fnSortNeutral(); });
 
+    //Show reset button
+    $('body').on('click', '.table thead', function() { $("#reset-sort").show(); });
+
+    //Show all rental data rows
+    $('body').on('click', '#show-all', function() {
+        $(".avg_by_bedroom_bathroom table tbody tr").show();
+        $("#show-all").hide();
+    });
+
+    //Quick button bindings
+    $('body').on('click', '.quick_button', function() {
+        var id = parseInt($(this).attr("id").replace(/quick/, ''));
+        switch(id) {
+            case 1:
+                $('#bed_rooms').slider('setValue', 2); $('#bath_rooms').slider('setValue', 2); $('#squarefootage').slider('setValue', 1250); break;
+            case 2:
+                $('#bed_rooms').slider('setValue', 0); $('#bath_rooms').slider('setValue', 1); $('#squarefootage').slider('setValue', 750);  break;
+            case 3:
+                $('#bed_rooms').slider('setValue', 3); $('#bath_rooms').slider('setValue', 1); $('#squarefootage').slider('setValue', 1500); break;
+            case 4:
+                $('#bed_rooms').slider('setValue', 4); $('#bath_rooms').slider('setValue', 2); $('#squarefootage').slider('setValue', 2250); break;
+            case 5:
+                $('#bed_rooms').slider('setValue', 0); $('#bath_rooms').slider('setValue', 0); $('#squarefootage').slider('setValue', 0);    break;
+        }
+    });
+}
 function initialize_raw_data_table(price_byBedBath, square_footage) {
     $("#container").append('<div class="avg_by_bedroom_bathroom">'
         +'<table class="table table-hover table-striped table-bordered">'
@@ -126,91 +167,36 @@ function initialize_raw_data_table(price_byBedBath, square_footage) {
         paging: false,
         bFilter: false
     });
-
-    //Reset button binding
-    $('body').on('click', '#reset-sort', function() { $("#reset-sort").hide(); raw_table.fnSortNeutral(); });
-
-    //Show reset button
-    $('body').on('click', '.table thead', function() { $("#reset-sort").show(); });
-
-    //Show all rental data rows
-    $('body').on('click', '#show-all', function() {
-        $(".avg_by_bedroom_bathroom table tbody tr").show();
-        $("#show-all").hide();
-    });
 }
-function initialize_sliders(price_byBedBath, square_footage) {
-    var init = true;
-    $('#bed_rooms').slider({
+function initialize_slider(price_byBedBath, square_footage, slider_id, input_id, input_event, min_val, max_val) {
+    $(slider_id).slider({
         formatter: function(value) {
-            $('#num_bedrooms').val(value);
-            calculate_price(price_byBedBath, square_footage, $('#num_bedrooms').val(), $('#num_bathrooms').val(), $('#square_footage').val(), init);
-            return (value > 0 ? (value > 1 ? value + ' Bedrooms' : value + ' Bedroom') : 'Studio');
+            $(input_id).val((slider_id.match(/squarefootage/) ? numberWithCommas(value) : value));
+            if(!slider_id.match(/squarefootage/)) { calculate_price(price_byBedBath, square_footage, $('#num_bedrooms').val(), $('#num_bathrooms').val(), $('#square_footage').val(), init); }
+            switch(slider_id) {
+                case "#bed_rooms":
+                    return (value > 0 ? (value > 1 ? value + ' Bedrooms' : value + ' Bedroom') : 'Studio'); 
+                    break;
+                case "#bath_rooms":
+                    return (value > 0 ? (value > 1 ? value + ' Bathrooms' : value + ' Bathroom') : 'No Bathroom');
+                    break;
+                case "#squarefootage":
+                    return 'Square Footage: ' + numberWithCommas(value);
+                    break;
+            }
         }
     });
-    $('#bath_rooms').slider({
-        formatter: function(value) {
-            $('#num_bathrooms').val(value);
-            calculate_price(price_byBedBath, square_footage, $('#num_bedrooms').val(), $('#num_bathrooms').val(), $('#square_footage').val(), init);
-            return (value > 0 ? (value > 1 ? value + ' Bathrooms' : value + ' Bathroom') : 'No Bathroom');
-        }
-    });
-    $('#squarefootage').slider({
-        formatter: function(value) {
-            $('#square_footage').val(numberWithCommas(value));
-            calculate_price(price_byBedBath, square_footage, $('#num_bedrooms').val(), $('#num_bathrooms').val(), $('#square_footage').val(), init);
-            return 'Square Footage: ' + numberWithCommas(value);
-        }
-    });
-    init = false;
-    $(document).on('input', '#num_bedrooms', function (e) {
-        var value = parseInt($(this).val());
-        if($.isNumeric(value)) {
-            if(value > -1 && value < 12) {
-                $('#bed_rooms').slider('setValue', value);
-            } else { $(this).val('0'); }
-        } else { $(this).val('0'); }
-    });
-
-    $(document).on('input', '#num_bathrooms', function (e) {
-        var value = parseInt($(this).val());
-        if($.isNumeric(value)) {
-            if(value > -1 && value < 11) {
-                $('#bath_rooms').slider('setValue', value);
-            } else { $(this).val('0'); }
-        } else { $(this).val('0'); }
-    });
-    $(document).on('change focus', '#square_footage', function (e) {
+    $(document).on(input_event, input_id, function (e) {
         if(e['type'].match(/focus/)) {
-            $(this).val($(this).val().replace(/,/g, '').replace(/\s*ft.*$/g, ''));
+            $(this).val(parseInt($(this).val().replace(/,/g, '').replace(/\s*ft.*$/g, '')));
         } else {
             var value = parseInt($(this).val());
             if($.isNumeric(value)) {
-                if(value > -1 && value < 10000) {
-                    $('#squarefootage').slider('setValue', value);
+                if(value > min_val && value < max_val) {
+                    $(input_id).slider('setValue', value);
                 } else { $(this).val('0'); }
             } else { $(this).val('0'); }
         }
     });
-
-
-    $('body').on('click', '.quick_button', function() {
-        var id = parseInt($(this).attr("id").replace(/quick/, ''));
-        switch(id) {
-            case 1:
-            $('#bed_rooms').slider('setValue', 2); $('#bath_rooms').slider('setValue', 2); $('#squarefootage').slider('setValue', 1250); break;
-            case 2:
-            $('#bed_rooms').slider('setValue', 0); $('#bath_rooms').slider('setValue', 1); $('#squarefootage').slider('setValue', 750);  break;
-            case 3:
-            $('#bed_rooms').slider('setValue', 3); $('#bath_rooms').slider('setValue', 1); $('#squarefootage').slider('setValue', 1500); break;
-            case 4:
-            $('#bed_rooms').slider('setValue', 4); $('#bath_rooms').slider('setValue', 2); $('#squarefootage').slider('setValue', 2250); break;
-            case 5:
-            default:
-            $('#bed_rooms').slider('setValue', 0); $('#bath_rooms').slider('setValue', 0); $('#squarefootage').slider('setValue', 0); break;
-        }
-    });
 }
-
-
 function numberWithCommas(x) { x = x.toString(); var pattern = /(-?\d+)(\d{3})/; while (pattern.test(x)) { x = x.replace(pattern, "$1,$2"); } return x; }

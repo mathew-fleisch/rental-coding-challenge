@@ -54,6 +54,7 @@ h1 {
 #calc-slider-hor { width: 80%; margin-left: 20px; margin-top:30px; display:none; }
 .quick_button { min-width: 308px; margin:0 0 10px 10px; }
 #quick5 { display: none; }
+.table tr td { text-align: center; }
 .dataTables_info { display: none; }
 
 

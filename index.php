@@ -29,10 +29,10 @@
 
     <hr />
 
-    <button id="quick1" class="quick_button btn btn-primary">Casa Maria -  2bd, 2ba, 1250 ft&sup2;</button>
-    <button id="quick2" class="quick_button btn btn-primary">Westwood Towers - Studio, 1ba, 750 ft&sup2;</button><br />
-    <button id="quick3" class="quick_button btn btn-primary">Bella Fortuna - 3bd, 1ba, 1500 ft&sup2;</button>
-    <button id="quick4" class="quick_button btn btn-primary">Palace Apartments - 4bd, 2ba, 2250 ft&sup2;</button><br />
+    <button id="quick1" class="quick_button btn btn-primary">Casa Maria -  2bd, 2ba, 1,250ft&sup2;</button>
+    <button id="quick2" class="quick_button btn btn-primary">Westwood Towers - Studio, 1ba, 750ft&sup2;</button><br />
+    <button id="quick3" class="quick_button btn btn-primary">Bella Fortuna - 3bd, 1ba, 1,500ft&sup2;</button>
+    <button id="quick4" class="quick_button btn btn-primary">Palace Apartments - 4bd, 2ba, 2,250ft&sup2;</button><br />
     <button id="quick5" class="quick_button btn btn-primary">Default - 0bd, 0ba, 0 ft&sup2;</button>
     
     <div id="calculator">
