@@ -105,10 +105,7 @@ function draw_price_slider(target_id, target_slider, price_low, price_med, price
     $(target_slider).slider('setValue',(sqft_perc > 0 ? ( ( (price_high - price_low) * (sqft_perc / 100) ) + price_low ) : price_avg));
     $(target_slider).slider('disable');
 }
-function initialize_buttons() { 
-    //Reset button binding
-    $('body').on('click', '#reset-sort', function() { $("#reset-sort").hide(); raw_table.fnSortNeutral(); });
-
+function initialize_buttons() {
     //Show reset button
     $('body').on('click', '.table thead', function() { $("#reset-sort").show(); });
 
@@ -168,6 +165,8 @@ function initialize_raw_data_table(price_byBedBath, square_footage) {
         paging: false,
         bFilter: false
     });
+    //Reset button binding
+    $('body').on('click', '#reset-sort', function() { $("#reset-sort").hide(); raw_table.fnSortNeutral(); });
 }
 function initialize_slider(price_byBedBath, square_footage, slider_id, input_id, input_event, min_val, max_val) {
     $(slider_id).slider({
@@ -176,11 +175,9 @@ function initialize_slider(price_byBedBath, square_footage, slider_id, input_id,
             if(!slider_id.match(/squarefootage/)) { calculate_price(price_byBedBath, square_footage, $('#num_bedrooms').val(), $('#num_bathrooms').val(), $('#square_footage').val(), init); }
             switch(slider_id) {
                 case "#bed_rooms":
-                    return (value > 0 ? (value > 1 ? value + ' Bedrooms' : value + ' Bedroom') : 'Studio'); 
-                    break;
+                    return (value > 0 ? (value > 1 ? value + ' Bedrooms'  : value + ' Bedroom')  : 'Studio');      break;
                 case "#bath_rooms":
-                    return (value > 0 ? (value > 1 ? value + ' Bathrooms' : value + ' Bathroom') : 'No Bathroom');
-                    break;
+                    return (value > 0 ? (value > 1 ? value + ' Bathrooms' : value + ' Bathroom') : 'No Bathroom'); break;
                 case "#squarefootage":
                     return 'Square Footage: ' + numberWithCommas(value);
                     break;
@@ -195,37 +192,16 @@ function initialize_slider(price_byBedBath, square_footage, slider_id, input_id,
                 $(input_id).select();
                 break;
             case 'keydown':
-                if(e['which'] === 38) {
+                if(e['which'] === 38 || e['which'] === 40) {
                     switch(input_id) {
                         case '#num_bedrooms':
                         case '#num_bathrooms':
-                            if((value+1) < max_val) {
-                                $(input_id).val(value+1);
-                                $(slider_id).slider('setValue', (value+1));
-                            }
+                            if(e['which'] === 38) { if((value+1) < max_val) { $(input_id).val(value+1); $(slider_id).slider('setValue', (value+1)); }
+                            } else { if((value-1) > min_val) { $(input_id).val((value-1)); $(slider_id).slider('setValue',(value-1)); } }
                             break;
                         case '#square_footage':
-                            if((value+10) < max_val) {
-                                $(input_id).val((value+10));
-                                $(slider_id).slider('setValue', (value+10));
-                            }
-                            break;
-                    }
-                }
-                if(e['which'] === 40) {
-                    switch(input_id) {
-                        case '#num_bedrooms':
-                        case '#num_bathrooms':
-                            if((value-1) > min_val) {
-                                $(input_id).val((value-1));
-                                $(slider_id).slider('setValue',(value-1));
-                            }
-                            break;
-                        case '#square_footage':
-                            if((value-10) > min_val) {
-                                $(input_id).val((value-10));
-                                $(slider_id).slider('setValue', (value-10));
-                            }
+                            if(e['which'] === 38) {  if((value+10) < max_val) { $(input_id).val((value+10)); $(slider_id).slider('setValue', (value+10)); }
+                            } else { if((value-10) > min_val) { $(input_id).val((value-10)); $(slider_id).slider('setValue', (value-10)); } }
                             break;
                     }
                 }
