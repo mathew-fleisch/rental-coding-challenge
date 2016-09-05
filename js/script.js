@@ -29,13 +29,14 @@ jQuery(document).ready(function($) {
             initialize_raw_data_table(price_byBedBath, square_footage);
             initialize_buttons();
 
-            initialize_slider(price_byBedBath, square_footage, "#bed_rooms", "#num_bedrooms", "input", -1, 11);
-            initialize_slider(price_byBedBath, square_footage, "#bath_rooms", "#num_bathrooms", "input", -1, 11);
-            initialize_slider(price_byBedBath, square_footage, "#squarefootage", "#square_footage", "input focus", -1, 10000);
+            initialize_slider(price_byBedBath, square_footage, "#bed_rooms", "#num_bedrooms", "keydown input focus", -1, 11);
+            initialize_slider(price_byBedBath, square_footage, "#bath_rooms", "#num_bathrooms", "keydown input focus", -1, 11);
+            initialize_slider(price_byBedBath, square_footage, "#squarefootage", "#square_footage", "keydown change focus", -1, 10000);
             init = false;
 
             //Initialize default view (onload)
-            $('#quick5').click();
+            $('#quick2').click();
+            $('#show-all').click();
 
         } else {
             $('#predict-container,#container,#show-raw').hide();
@@ -187,15 +188,58 @@ function initialize_slider(price_byBedBath, square_footage, slider_id, input_id,
         }
     });
     $(document).on(input_event, input_id, function (e) {
-        if(e['type'].match(/focus/)) {
-            $(this).val(parseInt($(this).val().replace(/,/g, '').replace(/\s*ft.*$/g, '')));
-        } else {
-            var value = parseInt($(this).val());
-            if($.isNumeric(value)) {
-                if(value > min_val && value < max_val) {
-                    $(input_id).slider('setValue', value);
+        var value = parseInt($(input_id).val().replace(/,/g, '').replace(/\s*ft.*$/g, ''));
+        switch(e['type']) {
+            case 'focusin':
+                $(input_id).val(value);
+                $(input_id).select();
+                break;
+            case 'keydown':
+                if(e['which'] === 38) {
+                    switch(input_id) {
+                        case '#num_bedrooms':
+                        case '#num_bathrooms':
+                            if((value+1) < max_val) {
+                                $(input_id).val(value+1);
+                                $(slider_id).slider('setValue', (value+1));
+                            }
+                            break;
+                        case '#square_footage':
+                            if((value+10) < max_val) {
+                                $(input_id).val((value+10));
+                                $(slider_id).slider('setValue', (value+10));
+                            }
+                            break;
+                    }
+                }
+                if(e['which'] === 40) {
+                    switch(input_id) {
+                        case '#num_bedrooms':
+                        case '#num_bathrooms':
+                            if((value-1) > min_val) {
+                                $(input_id).val((value-1));
+                                $(slider_id).slider('setValue',(value-1));
+                            }
+                            break;
+                        case '#square_footage':
+                            if((value-10) > min_val) {
+                                $(input_id).val((value-10));
+                                $(slider_id).slider('setValue', (value-10));
+                            }
+                            break;
+                    }
+                }
+                break;
+            case 'change':
+            case 'input':
+            case 'focusout':
+            default: 
+                if($.isNumeric(value)) {
+                    if(value > min_val && value < max_val) {
+                        $(slider_id).slider('setValue', value);
+                    } else { $(this).val('0'); }
                 } else { $(this).val('0'); }
-            } else { $(this).val('0'); }
+                break;
         }
     });
 }

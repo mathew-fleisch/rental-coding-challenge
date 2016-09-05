@@ -1,0 +1,32 @@
+html, body { padding: 0; }
+a,.btn-link { color: #20c063; }
+h1 { font-size: 30px; }
+.btn-primary { background-color: #20c063; -webkit-border-radius: 0px; -moz-border-radius: 0px; border-radius: 0px; }
+.btn-primary:hover { background-color: #1eaf5a; }
+.line .col { padding:0 10px 0 30px; height:809px; overflow:scroll; }
+#calculator { display:block; }
+#calculated-container, #container, #predict-container { text-align: left; margin:0 auto 0 20px; border:0; background-color: #f5f6f7; -webkit-border-radius: 0px; -moz-border-radius: 0px; border-radius: 0px;  }
+#container { background-color:transparent; }
+#predict-container { width: 55%; margin-left:10px; }
+.box .boxBody { padding:0; }
+#calculated-container { width: 40%; }
+#quick1,#quick3 { margin-left:0; }
+#container { margin: 10px auto; }
+.slider-selection.tick-slider-selection { background-color: #20c063; }
+@media screen and (max-width: 1130px) {
+	.quick_button { width: 100%; margin: 0 0 10px 0; }
+	#predict-container, #calculated-container { width:100%; margin: 10px 0; } 
+	#calculated-container { padding-bottom: 0; width:100%; }
+	#container { width: 100%; margin:10px 0; padding: 10px 0; }
+	#rental-data-title { margin-left:20px; }
+	#calc-slider { display:none; }
+	#calc-slider-hor { display:block; margin-right:auto; margin-left:auto; }
+	#calc-slider-hor .slider-tick-label { padding-top: 25px; }
+	#suggested-price-title { margin: 10px 0 35px 0;}
+	#calculator { display:block; }
+}
+@media screen and (max-width: 888px) {
+	.line .col { width: 100% !important; float: none; height:auto; }
+	.landingPagePaddingTop.prl.col.cols10.lastCol.backgroundLowlight { background-color: transparent; }
+	.rentalResumeRightDivScroll { height: auto; }
+}
