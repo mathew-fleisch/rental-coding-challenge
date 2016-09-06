@@ -8,4 +8,10 @@ The solution to this [challenge](https://github.com/mathew-fleisch/rental-coding
  - To see the suggested price for the four sample units for sale, click the buttons above the calculator to quickly toggle between the different values.
 
 ## Notes
-If I were to do this again, I would use a front-end framework, like AngularJS, to accomplish the same task. This would cut down on the amount of code and make it easier for multiple developers to work on the codebase. During the time allotted, I chose to prototype with js/jquery instead of the better long-term MVC option. 
+If I were to do this again, I would use a front-end framework, like AngularJS, to accomplish the same task. This would cut down on the amount of code and make it easier for multiple developers to work on the codebase. During the time allotted, I chose to prototype with js/jquery instead of the better long-term MVC option. Most of the custom/relevant code can be found in [js/script.js](https://github.com/mathew-fleisch/rental-coding-challenge/blob/master/js/script.js)
+
+## Third-Party Libraries
+ - [Bootstrap](http://getbootstrap.com/)
+ - [Bootstrap-Slider](http://seiyria.com/bootstrap-slider/)
+ - [jQuery 1.12.4](http://jquery.org)
+ - [DataTables](https://datatables.net/)
