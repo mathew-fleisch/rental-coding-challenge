@@ -1,1 +1,2 @@
-# rental-coding-challenge
+# Rental Coding Challenge
+The solution to this [challenge](https://github.com/mathew-fleisch/rental-coding-challenge) was written in PHP and Javascript. It is temporarily hosted on my [website](http://mathewfleisch.com/rental-coding-challenge) and the source on github; once the interview process is over, I will remove these sources. I developed two views to showcase the application within the [branded website](http://mathewfleisch.com/rental-coding-challenge/rental-calculator.php) framework, and another that [highlights the underlying code](http://mathewfleisch.com/rental-coding-challenge), with default styling. 
