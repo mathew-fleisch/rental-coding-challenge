@@ -1,5 +1,5 @@
     <h1>Rentals Recruitment Coding Challenge</h1>
-    <h3 class="notop">Mathew Fleisch - <a href="mailto:mathew.fleisch@gmail.com">mathew.fleisch@gmail.com</a></h3>
+    <h3 class="notop"><a href="http://www.mathewfleisch.com/portfolio/" target="_blank">Mathew Fleisch</a> - <a href="mailto:mathew.fleisch@gmail.com">mathew.fleisch@gmail.com</a></h3>
     <h4 class="notop"><a href="RentalsRecruitmentCodingChallenge.html" target="_blank">Challenge Doc</a> | <a href="challenge_data.csv" target="_blank">CSV</a>(<a href="js/raw_data.php" target="_blank">JSON</a>) | <a href="https://github.com/mathew-fleisch/rental-coding-challenge" target="_blank">Source</a> | <?php echo (preg_match("/calculator/", $_SERVER['REQUEST_URI']) ? '<a href="/rental-coding-challenge/">Stand-Alone</a>' : '<a href="/rental-coding-challenge/rental-calculator.php">Styled</a>'); ?></h4>
 
     <hr />
